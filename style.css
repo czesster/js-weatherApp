@@ -7,3 +7,71 @@
 html {
   font-size: 62.5%;
 }
+
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: #272727;
+}
+
+.container {
+  margin: 40rem auto 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form {
+  display: flex;
+  justify-content: center;
+
+  width: 40rem;
+
+  border-radius: 10rem;
+
+  position: relative;
+}
+
+/* https://img.freepik.com/premium-vector/set-search-boxes-ui-template-search-bar-element_186930-137.jpg?w=2000 */
+.form__input {
+  width: 80%;
+  padding: 0.8rem 2.4rem;
+
+  background-color: #fff;
+
+  font-size: 2rem;
+
+  border-radius: 10rem 0 0 10rem;
+  border: none;
+}
+
+.form__input:focus {
+  outline: none;
+}
+
+.form__btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 1.2rem;
+
+  background-color: #fff;
+
+  font-size: 1.6rem;
+
+  border-radius: 10rem;
+  border: none;
+
+  transition: all 0.2s ease-in-out;
+
+  -webkit-box-shadow: 0 0 0 1.2rem rgba(39, 39, 39, 1);
+  -moz-box-shadow: 0 0 0 1.2rem rgba(39, 39, 39, 1);
+  box-shadow: 0 0 0 1.2rem rgba(39, 39, 39, 1);
+}
+
+.form__btn:hover {
+  transform: scale(1.2);
+  -webkit-box-shadow: 0 0 0 0.7rem rgba(39, 39, 39, 1);
+  -moz-box-shadow: 0 0 0 0.7rem rgba(39, 39, 39, 1);
+  box-shadow: 0 0 0 0.7rem rgba(39, 39, 39, 1);
+}
