@@ -32,12 +32,13 @@
     <main class="main">
       <div class="container">
         <!-- <img src="" alt="weatherly logo" /> -->
-        <form class="form" action="none">
+        <form class="form">
           <input
             class="form__input"
             type="text"
             placeholder="search your city"
             autocomplete="off"
+            data-form-input
           />
           <button class="form__btn" data-form-button>
             <ion-icon name="search-outline"></ion-icon>
@@ -45,6 +46,11 @@
         </form>
       </div>
     </main>
+    <footer class="footer">
+      <p class="copyright">
+        Copyright &copy; <span data-year>2023</span> by Jakub Błoch
+      </p>
+    </footer>
 
     <script
       type="module"

@@ -15,4 +15,23 @@ async function getWeatherByCity(city, apiKey) {
   console.log(respData);
 }
 
-getWeatherByCity(city, apiKey);
+const input = document.querySelector("[data-form-input]");
+const formBtn = document.querySelector("[data-form-button]");
+const year = document.querySelector("[data-year]");
+
+let clicked = false;
+
+formBtn.addEventListener("click", function (e) {
+  e.preventDefault();
+  const inputText = input.value;
+  console.log(inputText);
+  getWeatherByCity(inputText, apiKey);
+
+  clicked = true;
+});
+
+const updateYear = () => {
+  year.textContent = new Date().getFullYear();
+  console.log(new Date().getFullYear());
+};
+updateYear();
