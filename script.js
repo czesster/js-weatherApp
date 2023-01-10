@@ -26,8 +26,7 @@ const weatherApp = new WeatherApp();
 // ///////////////////////////////////////////////////////////////
 const input = document.querySelector("[data-form-input]");
 const formBtn = document.querySelector("[data-form-button]");
-
-let clicked = false;
+const container = document.querySelector(".container");
 
 formBtn.addEventListener("click", function (e) {
   e.preventDefault();
@@ -35,7 +34,7 @@ formBtn.addEventListener("click", function (e) {
   console.log(inputText);
   weatherApp.getWeatherByCity(inputText, weatherApp.apiKey);
 
-  clicked = true;
+  container.style.marginTop = "4.8rem";
 });
 
 // Update year in footer
