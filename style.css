@@ -17,6 +17,9 @@ body {
   min-height: 100vh;
 }
 
+/* ////////////////////////////////////////////////// */
+/* ////////////////////// MAIN ///////////////////////*/
+/* ////////////////////////////////////////////////// */
 .main {
   flex: 1;
 }
@@ -86,6 +89,59 @@ body {
   box-shadow: 0 0 0 0.7rem rgba(39, 39, 39, 1);
 }
 
+.tile {
+  margin: 4.8rem auto 0;
+  padding: 1.2rem 3.6rem 2.4rem 3.6rem;
+
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+  justify-content: center;
+
+  width: 40rem;
+
+  background-color: #fff;
+
+  border-radius: 4rem;
+}
+
+.divider {
+  border-top: 1px solid #272727;
+}
+
+.divider--2 {
+  margin-bottom: 2.4rem;
+}
+
+.city,
+.temperature {
+  align-self: center;
+}
+
+.city {
+  font-size: 4.2rem;
+}
+
+.temperature {
+  display: flex;
+  gap: 2rem;
+
+  font-size: 6rem;
+}
+
+.feels-like,
+.humidity,
+.pressure,
+.wind,
+.wind__dir {
+  display: flex;
+  justify-content: space-between;
+  font-size: 2.4rem;
+}
+
+/* ////////////////////////////////////////////////// */
+/* ///////////////////// FOOTER //////////////////////*/
+/* ////////////////////////////////////////////////// */
 .footer {
   display: flex;
   justify-content: flex-end;
