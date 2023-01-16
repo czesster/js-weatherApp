@@ -3,8 +3,9 @@ class WeatherApp {
   // https://openweathermap.org/api/one-call-3
   apiKey = "3de7bd79ff351d443868c0e738e3bc08";
 
-  constructor(tiles) {
-    this.tiles = tiles;
+  constructor(tilesContainer, input) {
+    this.tilesContainer = tilesContainer;
+    this.input = input;
   }
 
   // API url to be fetched
@@ -19,10 +20,24 @@ class WeatherApp {
     return respJSON;
   }
 
+  getWindDirection(deg) {
+    const degNumber = parseFloat(deg);
+    if (degNumber >= 0 && degNumber < 35) return "North";
+    if (degNumber > 35 && degNumber < 55) return "North-East";
+    if (degNumber > 55 && degNumber < 125) return "East";
+    if (degNumber > 125 && degNumber < 145) return "South-East";
+    if (degNumber > 145 && degNumber < 215) return "South";
+    if (degNumber > 215 && degNumber < 235) return "South-West";
+    if (degNumber > 235 && degNumber < 305) return "West";
+    if (degNumber > 305 && degNumber < 325) return "North-West";
+    if (degNumber > 325 && degNumber <= 360) return "North";
+  }
+
   // resolve .json() promise and generate tile
   generatePage(city, apiKey) {
     this.getWeatherJSON(city, apiKey).then((res) => {
       console.log(res);
+
       this.generateTileElement(
         res.name,
         res.main.temp,
@@ -31,7 +46,7 @@ class WeatherApp {
         res.main.humidity,
         res.main.pressure,
         res.wind.speed,
-        res.wind.deg
+        this.getWindDirection(res.wind.deg)
       );
     });
   }
@@ -67,9 +82,11 @@ class WeatherApp {
           parseFloat(feelsLike) - 273
         )}°</span></div>
         <div class="humidity"><span>Humidity:</span> <span>${humidity}%</span></div>
-        <div class="pressure"><span>Pressure:</span> <span>${pressure}mbar</span></div>
+        <div class="pressure"><span>Pressure:</span> <span>${pressure} mbar</span></div>
         <div class="wind">
-          <span>Wind Speed:</span> <span>${windSpeed}KM/H</span> 
+          <span>Wind Speed:</span> <span>${Math.round(
+            parseFloat(windSpeed) * 1.852
+          )} km/h</span> 
         </div>
         <div class="wind__dir"><span> Wind Direction:</span><span>${windDirection}</span></div>
       </div>
@@ -77,7 +94,9 @@ class WeatherApp {
     // wind speed formula to get in km/h: wind*1.852
     // generate
 
-    this.tiles.insertAdjacentHTML("beforeend", html);
+    this.input.value = "";
+    this.tilesContainer.innerHTML = "";
+    this.tilesContainer.insertAdjacentHTML("beforeend", html);
   }
 }
 
@@ -87,9 +106,9 @@ class WeatherApp {
 const input = document.querySelector("[data-form-input]");
 const formBtn = document.querySelector("[data-form-button]");
 const container = document.querySelector(".container");
-const tiles = document.querySelector(".tiles");
+const tilesContainer = document.querySelector(".tiles");
 
-const weatherApp = new WeatherApp(tiles);
+const weatherApp = new WeatherApp(tilesContainer, input);
 
 formBtn.addEventListener("click", function (e) {
   e.preventDefault();
