@@ -36,8 +36,6 @@ class WeatherApp {
   // resolve .json() promise and generate tile
   generatePage(city, apiKey) {
     this.getWeatherJSON(city, apiKey).then((res) => {
-      console.log(res.weather[0].icon);
-
       this.generateTileElement(
         res.name,
         res.main.temp,
@@ -109,8 +107,7 @@ const weatherApp = new WeatherApp(tilesContainer, input);
 formBtn.addEventListener("click", function (e) {
   e.preventDefault();
   const inputText = input.value.toLowerCase();
-  console.log(inputText);
-  console.log(weatherApp.generatePage(inputText, weatherApp.apiKey));
+  weatherApp.generatePage(inputText, weatherApp.apiKey);
 
   container.style.marginTop = "4.8rem";
 });
