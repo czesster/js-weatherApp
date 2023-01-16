@@ -3,9 +3,10 @@ class WeatherApp {
   // https://openweathermap.org/api/one-call-3
   apiKey = "3de7bd79ff351d443868c0e738e3bc08";
 
-  constructor(tilesContainer, input) {
+  constructor(tilesContainer, input, errorContainer) {
     this.tilesContainer = tilesContainer;
     this.input = input;
+    this.errorContainer = errorContainer;
   }
 
   // API url to be fetched
@@ -13,11 +14,25 @@ class WeatherApp {
     return `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
   }
 
+  generateError(errorMsg) {
+    const errorMessageHTML = `<p class="error__message">${errorMsg}</p>`;
+
+    this.tilesContainer.innerHTML = "";
+    this.errorContainer.innerHTML = "";
+    errorContainer.insertAdjacentHTML("beforeend", errorMessageHTML);
+  }
+
   // fetch data from api using given city
   async getWeatherJSON(city, apiKey) {
-    const resp = await fetch(this.getUrl(city, apiKey));
-    const respJSON = await resp.json();
-    return respJSON;
+    try {
+      const resp = await fetch(this.getUrl(city, apiKey));
+      if (!resp.ok) throw new Error(`Searched city does not exist`);
+
+      return await resp.json();
+    } catch (err) {
+      this.generateError(err.message);
+      console.log(`${err.message}`);
+    }
   }
 
   getWindDirection(deg) {
@@ -36,16 +51,18 @@ class WeatherApp {
   // resolve .json() promise and generate tile
   generatePage(city, apiKey) {
     this.getWeatherJSON(city, apiKey).then((res) => {
-      this.generateTileElement(
-        res.name,
-        res.main.temp,
-        `http://openweathermap.org/img/wn/${res.weather[0].icon}@2x.png`,
-        res.main.feels_like,
-        res.main.humidity,
-        res.main.pressure,
-        res.wind.speed,
-        this.getWindDirection(res.wind.deg)
-      );
+      try {
+        this.generateTileElement(
+          res.name,
+          res.main.temp,
+          `http://openweathermap.org/img/wn/${res.weather[0].icon}@2x.png`,
+          res.main.feels_like,
+          res.main.humidity,
+          res.main.pressure,
+          res.wind.speed,
+          this.getWindDirection(res.wind.deg)
+        );
+      } catch (err) {}
     });
   }
 
@@ -90,6 +107,7 @@ class WeatherApp {
 
     this.input.value = "";
     this.tilesContainer.innerHTML = "";
+    this.errorContainer.innerHTML = "";
     this.tilesContainer.insertAdjacentHTML("beforeend", html);
   }
 }
@@ -101,8 +119,9 @@ const input = document.querySelector("[data-form-input]");
 const formBtn = document.querySelector("[data-form-button]");
 const container = document.querySelector(".container");
 const tilesContainer = document.querySelector(".tiles");
+const errorContainer = document.querySelector(".error__box");
 
-const weatherApp = new WeatherApp(tilesContainer, input);
+const weatherApp = new WeatherApp(tilesContainer, input, errorContainer);
 
 formBtn.addEventListener("click", function (e) {
   e.preventDefault();
