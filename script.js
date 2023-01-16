@@ -1,6 +1,5 @@
 "use strict";
 class WeatherApp {
-  // https://openweathermap.org/api/one-call-3
   apiKey = "3de7bd79ff351d443868c0e738e3bc08";
 
   constructor(tilesContainer, input, errorContainer) {
@@ -14,6 +13,7 @@ class WeatherApp {
     return `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
   }
 
+  // generating error messages based on error message thrown
   generateError(errorMsg) {
     const errorMessageHTML = `<p class="error__message">${errorMsg}</p>`;
 
@@ -31,10 +31,10 @@ class WeatherApp {
       return await resp.json();
     } catch (err) {
       this.generateError(err.message);
-      console.log(`${err.message}`);
     }
   }
 
+  // get wind direction names for data tile
   getWindDirection(deg) {
     const degNumber = parseFloat(deg);
     if (degNumber >= 0 && degNumber < 35) return "North";
@@ -48,25 +48,7 @@ class WeatherApp {
     if (degNumber > 325 && degNumber <= 360) return "North";
   }
 
-  // resolve .json() promise and generate tile
-  generatePage(city, apiKey) {
-    this.getWeatherJSON(city, apiKey).then((res) => {
-      try {
-        this.generateTileElement(
-          res.name,
-          res.main.temp,
-          `http://openweathermap.org/img/wn/${res.weather[0].icon}@2x.png`,
-          res.main.feels_like,
-          res.main.humidity,
-          res.main.pressure,
-          res.wind.speed,
-          this.getWindDirection(res.wind.deg)
-        );
-      } catch (err) {}
-    });
-  }
-
-  // https://stackoverflow.com/questions/50776874/how-to-smoothly-add-dynamically-created-element-to-the-dom-using-css3-only
+  // generate tile with all informations
   generateTileElement(
     city,
     temperature,
@@ -102,13 +84,29 @@ class WeatherApp {
         <div class="wind__dir"><span> Wind Direction:</span><span>${windDirection}</span></div>
       </div>
     `;
-    // wind speed formula to get in km/h: wind*1.852
-    // generate
 
     this.input.value = "";
     this.tilesContainer.innerHTML = "";
     this.errorContainer.innerHTML = "";
     this.tilesContainer.insertAdjacentHTML("beforeend", html);
+  }
+
+  // resolve .json() promise and generate tile
+  generatePage(city, apiKey) {
+    this.getWeatherJSON(city, apiKey).then((res) => {
+      try {
+        this.generateTileElement(
+          res.name,
+          res.main.temp,
+          `http://openweathermap.org/img/wn/${res.weather[0].icon}@2x.png`,
+          res.main.feels_like,
+          res.main.humidity,
+          res.main.pressure,
+          res.wind.speed,
+          this.getWindDirection(res.wind.deg)
+        );
+      } catch (err) {}
+    });
   }
 }
 
@@ -135,6 +133,5 @@ formBtn.addEventListener("click", function (e) {
 const year = document.querySelector("[data-year]");
 const updateYear = () => {
   year.textContent = new Date().getFullYear();
-  console.log(new Date().getFullYear());
 };
 updateYear();
