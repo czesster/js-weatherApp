@@ -36,12 +36,12 @@ class WeatherApp {
   // resolve .json() promise and generate tile
   generatePage(city, apiKey) {
     this.getWeatherJSON(city, apiKey).then((res) => {
-      console.log(res);
+      console.log(res.weather[0].icon);
 
       this.generateTileElement(
         res.name,
         res.main.temp,
-        "cloudy-outline",
+        `http://openweathermap.org/img/wn/${res.weather[0].icon}@2x.png`,
         res.main.feels_like,
         res.main.humidity,
         res.main.pressure,
@@ -55,7 +55,7 @@ class WeatherApp {
   generateTileElement(
     city,
     temperature,
-    icon,
+    src,
     feelsLike,
     humidity,
     pressure,
@@ -67,15 +67,11 @@ class WeatherApp {
         <div class="city">${city}</div>
         <hr class="divider" />
         <div class="temperature">
-          <div class="temperature__icon">
-            <ion-icon name="${icon}"></ion-icon>
-          </div>
+        <img class="temperature__icon" src="${src}" alt="current weather icon" />
           <div class="temperature__value">${Math.round(
             parseFloat(temperature) - 273
           )}°</div>
-          <div class="temperature__icon">
-            <ion-icon name="${icon}"></ion-icon>
-          </div>
+          <img class="temperature__icon" src="${src}" alt="current weather icon" />
         </div>
         <hr class="divider divider--2" />
         <div class="feels-like"><span>Feels like:</span> <span>${Math.round(
