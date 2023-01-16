@@ -36,16 +36,24 @@ class WeatherApp {
 
   // get wind direction names for data tile
   getWindDirection(deg) {
-    const degNumber = parseFloat(deg);
-    if (degNumber >= 0 && degNumber < 35) return "North";
-    if (degNumber > 35 && degNumber < 55) return "North-East";
-    if (degNumber > 55 && degNumber < 125) return "East";
-    if (degNumber > 125 && degNumber < 145) return "South-East";
-    if (degNumber > 145 && degNumber < 215) return "South";
-    if (degNumber > 215 && degNumber < 235) return "South-West";
-    if (degNumber > 235 && degNumber < 305) return "West";
-    if (degNumber > 305 && degNumber < 325) return "North-West";
-    if (degNumber > 325 && degNumber <= 360) return "North";
+    const directions = [
+      "North",
+      "North-East",
+      "East",
+      "South-East",
+      "South",
+      "SouthWest",
+      "West",
+      "North-West",
+    ];
+
+    let degrees = (deg * 8) / 360;
+    degrees = Math.round(degrees);
+
+    // to be sure degrees will be from 0-7
+    degrees = (degrees + 8) % 8;
+
+    return directions[degrees];
   }
 
   // generate tile with all informations
